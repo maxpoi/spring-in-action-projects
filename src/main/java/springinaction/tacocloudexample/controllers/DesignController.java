@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -58,7 +59,13 @@ public class DesignController {
     }
 
     @PostMapping
-    public String processDesign(@Valid Taco design, Errors errors) {
+    /***
+     * Need to add this @ModelAttribute("design").
+     * Because previously we add "design" (a new Taco()) as an attribute into the model
+     * and in the html we refer the object indeed as "design".
+     * However, with just @Valid, it automatically asks for a "Taco" attribute from the model, which is of course undefined.
+     */
+    public String processDesign(@Valid @ModelAttribute("design") Taco design, Errors errors) {
         if (errors.hasErrors()) {
             return "design";
         }

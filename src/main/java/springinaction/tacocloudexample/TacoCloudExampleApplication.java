@@ -12,6 +12,9 @@ public class TacoCloudExampleApplication implements WebMvcConfigurer {
         SpringApplication.run(TacoCloudExampleApplication.class, args);
     }
 
+    /***
+     * Views such that has no usage except forward a page, can be simply implemented through this api.
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("home");

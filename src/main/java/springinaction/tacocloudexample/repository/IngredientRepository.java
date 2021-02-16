@@ -12,8 +12,17 @@ import java.sql.SQLException;
  * Utilize Jdbc
  */
 
+interface IngredientRepoInterface {
+    Iterable<Ingredient> findAll();
+
+    Ingredient findOne(String id);
+
+    Ingredient save(Ingredient ingredient);
+}
+
+
 @Repository
-public class IngredientRepository {
+public class IngredientRepository implements IngredientRepoInterface{
 
     private JdbcTemplate jdbc;
 
@@ -21,6 +30,8 @@ public class IngredientRepository {
     public IngredientRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
+
+    @Override
     public Ingredient save(Ingredient ingredient) {
         jdbc.update(
                 "insert into Ingredient (id, name, type) values (?, ?, ?)",
@@ -30,12 +41,14 @@ public class IngredientRepository {
         return ingredient;
     }
 
+    @Override
     public Iterable<Ingredient> findAll() {
         return jdbc.query(
                 "select id, name, type from Ingredient",
                 this::mapRowToIngredient);
     }
 
+    @Override
     public Ingredient findOne(String id) {
         return jdbc.queryForObject(
                 "select id, name, type from Ingredient where id=?",
